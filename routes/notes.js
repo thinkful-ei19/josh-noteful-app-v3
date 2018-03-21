@@ -13,20 +13,20 @@ router.get('/notes', (req, res, next) => {
 
   let filter = {};
   let projection = {};
-  let sort = 'created';
+  let sort = 'created'; // default sorting
 
-  if(searchTerm) {
+  if (searchTerm) {
     filter.$text = { $search: searchTerm };
-    projection.score = {$meta: 'textScore'};
+    projection.score = { $meta: 'textScore' };
     sort = projection;
   }
 
   Note.find(filter, projection)
     .sort(sort)
-    .then(results=>{
+    .then(results => {
       res.json(results);
     })
-    .catch(err =>{
+    .catch(err => {
       next(err);
     });
 });
